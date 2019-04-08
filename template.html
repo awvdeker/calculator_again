@@ -50,7 +50,9 @@
     var grabValue2 = document.getElementById("outputText2");
     var operatorChosen = document.getElementById('selector');
 
-    grabButton.addEventListener('click',function(){
+    grabButton.addEventListener('click',clickHandler);
+
+    function clickHandler() {
       console.log('Clicky!');
       document.getElementById("error").innerHTML="";
       document.getElementById("myOutput").innerHTML="";
@@ -67,7 +69,7 @@
           document.getElementById("myOutput").innerHTML=result(Number(grabValue.value),Number(grabValue2.value),operatorChosen.value);
         }
       },500);
-    });
+    }
 
     function catchError(left,right){
       if ((left =='') && (right == '') ){
@@ -88,6 +90,9 @@
     grabValue2.addEventListener('keyup',randomFunction);
 
     function randomFunction(){
+      if (event.key === 'Enter'){
+        clickHandler();
+      }
       if (this.value == "rand"){
         this.value = Math.floor(Math.random()*100)+1;
       }
