@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-12 bg-white shadow-sm p-4 mx-auto mt-4 border">
             <!-- Start writing content here -->
-          <p id="error"></p>
+          <p id="error"> </p>
           <input id="outputText">
           <select id="selector">
             <option value="plus">+</option>
@@ -48,47 +48,67 @@
     console.log(grabButton);
     grabButton.addEventListener('click',function(){
       console.log('Clicky!');
+      document.getElementById("error").innerHTML="";
       grabButton.classList.replace('btn-primary','btn-success');
       grabButton.innerHTML="Calculating...";
       var spinner = document.createElement("i");
       spinner.classList.add("fas","fa-spinner","fa-spin","mr-2");
       grabButton.prepend(spinner);
-      var grabValue =  Number(document.getElementById("outputText").value);
-      var grabValue2 = Number(document.getElementById("outputText2").value);
+      var grabValue = document.getElementById("outputText").value;
+      var grabValue2 = document.getElementById("outputText2").value;
       var operatorChosen = document.getElementById('selector').value;
       setTimeout(function(){
         grabButton.classList.replace('btn-success','btn-primary');
         grabButton.removeChild(spinner);
         grabButton.innerHTML="Calculate!";
         if ( (grabValue !='') && (grabValue2 != '')){
-          document.getElementById("myOutput").innerHTML=result(grabValue,grabValue2,operatorChosen);
+          document.getElementById("myOutput").innerHTML=result(Number(grabValue),Number(grabValue2),operatorChosen);
         } else if ((grabValue =='') && (grabValue2 == '') ){
-          document.getElementById("error").innerHTML="Please enter a number in both fields"
+          document.getElementById("error").innerHTML="Please enter a number in both fields";
         } else if (grabValue =='') {
-          document.getElementById("error").innerHTML="Please enter a number in the left field"
+          document.getElementById("error").innerHTML="Please enter a number in the left field";
         } else if (grabValue2 =='') {
-          document.getElementById("error").innerHTML="Please enter a number in the right field"
+          document.getElementById("error").innerHTML="Please enter a number in the right field";
         }
       },500);
     });
+    var input1 = document.getElementById("outputText");
+    var input2 = document.getElementById("outputText2");
+    input1.addEventListener('keyup',randomFunction);
+    input2.addEventListener('keyup',randomFunction);
+
+    function randomFunction(){
+      if (this.value == "rand"){
+        this.value = Math.floor(Math.random()*100)+1;
+      }
+    }
+
     function result (a,b,c){
       switch (c) {
         case "plus":
           return a + b;
           break;
         case "subtract":
-          return a - b;
+          if (b>a) {
+            document.getElementById("error").innerHTML="You can't subtract a number from a smaller number";
+          } else {return a - b;}
           break;
         case "multiply":
+          if (b%2!=0){
+            document.getElementById("error").innerHTML="You can't multiply by odd numbers";
+          }
           return a * b;
           break;
         case "divide":
-          return a / b;
+          if (b == 0){
+            document.getElementById("error").innerHTML="You can't divide by 0";
+          } else if (Number.isInteger(c) == false) {
+            document.getElementById("error").innerHTML="You can't divide by a number if the result would not be an integer";
+          } else {return a / b};
           break;
         default:
           return;
-}
-
+      }
     }
 
 
