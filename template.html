@@ -46,6 +46,10 @@
     /** Write your javascript code here **/
     var grabButton = document.querySelector(".btn");
     console.log(grabButton);
+    var grabValue = document.getElementById("outputText");
+    var grabValue2 = document.getElementById("outputText2");
+    var operatorChosen = document.getElementById('selector');
+
     grabButton.addEventListener('click',function(){
       console.log('Clicky!');
       document.getElementById("error").innerHTML="";
@@ -55,28 +59,24 @@
       var spinner = document.createElement("i");
       spinner.classList.add("fas","fa-spinner","fa-spin","mr-2");
       grabButton.prepend(spinner);
-      var grabValue = document.getElementById("outputText").value;
-      var grabValue2 = document.getElementById("outputText2").value;
-      var operatorChosen = document.getElementById('selector').value;
       setTimeout(function(){
         grabButton.classList.replace('btn-success','btn-primary');
         grabButton.removeChild(spinner);
         grabButton.innerHTML="Calculate!";
-        if ( (grabValue !='') && (grabValue2 != '')){
-          document.getElementById("myOutput").innerHTML=result(Number(grabValue),Number(grabValue2),operatorChosen);
-        } else if ((grabValue =='') && (grabValue2 == '') ){
+        if ( (grabValue.value !='') && (grabValue2.value != '')){
+          document.getElementById("myOutput").innerHTML=result(Number(grabValue.value),Number(grabValue2.value),operatorChosen.value);
+        } else if ((grabValue.value =='') && (grabValue2.value == '') ){
           document.getElementById("error").innerHTML="Please enter a number in both fields";
-        } else if (grabValue =='') {
+        } else if (grabValue.value =='') {
           document.getElementById("error").innerHTML="Please enter a number in the left field";
-        } else if (grabValue2 =='') {
+        } else if (grabValue2.value =='') {
           document.getElementById("error").innerHTML="Please enter a number in the right field";
         }
       },500);
     });
-    var input1 = document.getElementById("outputText");
-    var input2 = document.getElementById("outputText2");
-    input1.addEventListener('keyup',randomFunction);
-    input2.addEventListener('keyup',randomFunction);
+
+    grabValue.addEventListener('keyup',randomFunction);
+    grabValue2.addEventListener('keyup',randomFunction);
 
     function randomFunction(){
       if (this.value == "rand"){
@@ -86,6 +86,16 @@
         document.getElementById("error").innerHTML="You can't do any operations if the content is anything but a number";
       } else if ( this.value == Number(this.value) ){
         document.getElementById("error").innerHTML="";
+      }
+      if ( this.value == "Boom!"){
+        var list = document.querySelectorAll('*');
+        for (let x=0;x<list.length;x++){
+          list[x].style.top=0;
+          list[x].style.transition='all 4s linear';
+          setTimeout(function(){
+            list[x].style.top='100vh';
+          },100)
+        }
       }
     }
 
@@ -97,28 +107,28 @@
         case "subtract":
           if (b>a) {
             document.getElementById("error").innerHTML="You can't subtract a number from a smaller number";
+            return "";
           } else {return a - b;}
           break;
         case "multiply":
           if (b%2!=0){
             document.getElementById("error").innerHTML="You can't multiply by odd numbers";
-          }
-          return a * b;
+            return "";
+          } else {return a * b};
           break;
         case "divide":
           if (b == 0){
             document.getElementById("error").innerHTML="You can't divide by 0";
-          } else if (Number.isInteger(c) == false) {
+            return "";
+          } else if (Number.isInteger(a/b) == false) {
             document.getElementById("error").innerHTML="You can't divide by a number if the result would not be an integer";
+            return "";
           } else {return a / b};
           break;
         default:
           return;
       }
     }
-
-
-//<i class="fas fa-spinner"></i>
 
 </script>
 </body>
