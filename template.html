@@ -49,6 +49,7 @@
     grabButton.addEventListener('click',function(){
       console.log('Clicky!');
       document.getElementById("error").innerHTML="";
+      document.getElementById("myOutput").innerHTML="";
       grabButton.classList.replace('btn-primary','btn-success');
       grabButton.innerHTML="Calculating...";
       var spinner = document.createElement("i");
@@ -80,6 +81,11 @@
     function randomFunction(){
       if (this.value == "rand"){
         this.value = Math.floor(Math.random()*100)+1;
+      }
+      if ( this.value != Number(this.value) ){
+        document.getElementById("error").innerHTML="You can't do any operations if the content is anything but a number";
+      } else if ( this.value == Number(this.value) ){
+        document.getElementById("error").innerHTML="";
       }
     }
 
