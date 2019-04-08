@@ -16,7 +16,20 @@
     <div class="row">
         <div class="col-12 bg-white shadow-sm p-4 mx-auto mt-4 border">
             <!-- Start writing content here -->
-
+          <p id="error"></p>
+          <input id="outputText">
+          <select id="selector">
+            <option value="plus">+</option>
+            <option value="subtract">-</option>
+            <option value="multiply">*</option>
+            <option value="divide">/</option>
+          </select>
+          <input id="outputText2">
+          <br/>
+          <button class="btn btn-primary mt-2">Calculate!</button>
+          <div id="borderedBox" class="border mt-2 h-auto p-3">
+            Here is your result : <span id="myOutput"></span>
+          </div>
         </div>
     </div>
 
@@ -31,6 +44,56 @@
 
 <script>
     /** Write your javascript code here **/
+    var grabButton = document.querySelector(".btn");
+    console.log(grabButton);
+    grabButton.addEventListener('click',function(){
+      console.log('Clicky!');
+      grabButton.classList.replace('btn-primary','btn-success');
+      grabButton.innerHTML="Calculating...";
+      var spinner = document.createElement("i");
+      spinner.classList.add("fas","fa-spinner","fa-spin","mr-2");
+      grabButton.prepend(spinner);
+      var grabValue =  Number(document.getElementById("outputText").value);
+      var grabValue2 = Number(document.getElementById("outputText2").value);
+      var operatorChosen = document.getElementById('selector').value;
+      setTimeout(function(){
+        grabButton.classList.replace('btn-success','btn-primary');
+        grabButton.removeChild(spinner);
+        grabButton.innerHTML="Calculate!";
+        if ( (grabValue !='') && (grabValue2 != '')){
+          document.getElementById("myOutput").innerHTML=result(grabValue,grabValue2,operatorChosen);
+        } else if ((grabValue =='') && (grabValue2 == '') ){
+          document.getElementById("error").innerHTML="Please enter a number in both fields"
+        } else if (grabValue =='') {
+          document.getElementById("error").innerHTML="Please enter a number in the left field"
+        } else if (grabValue2 =='') {
+          document.getElementById("error").innerHTML="Please enter a number in the right field"
+        }
+      },500);
+    });
+    function result (a,b,c){
+      switch (c) {
+        case "plus":
+          return a + b;
+          break;
+        case "subtract":
+          return a - b;
+          break;
+        case "multiply":
+          return a * b;
+          break;
+        case "divide":
+          return a / b;
+          break;
+        default:
+          return;
+}
+
+    }
+
+
+//<i class="fas fa-spinner"></i>
+
 </script>
 </body>
 </html>
