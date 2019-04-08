@@ -63,17 +63,26 @@
         grabButton.classList.replace('btn-success','btn-primary');
         grabButton.removeChild(spinner);
         grabButton.innerHTML="Calculate!";
-        if ( (grabValue.value !='') && (grabValue2.value != '')){
+        if (catchError(grabValue.value,grabValue2.value)) {
           document.getElementById("myOutput").innerHTML=result(Number(grabValue.value),Number(grabValue2.value),operatorChosen.value);
-        } else if ((grabValue.value =='') && (grabValue2.value == '') ){
-          document.getElementById("error").innerHTML="Please enter a number in both fields";
-        } else if (grabValue.value =='') {
-          document.getElementById("error").innerHTML="Please enter a number in the left field";
-        } else if (grabValue2.value =='') {
-          document.getElementById("error").innerHTML="Please enter a number in the right field";
         }
       },500);
     });
+
+    function catchError(left,right){
+      if ((left =='') && (right == '') ){
+        document.getElementById("error").innerHTML="Please enter a number in both fields";
+        return false;
+      }
+      if (left =='') {
+        document.getElementById("error").innerHTML="Please enter a number in the left field";
+        return false;
+      } if (right =='') {
+        document.getElementById("error").innerHTML="Please enter a number in the right field";
+        return false;
+      }
+      return true;
+    }
 
     grabValue.addEventListener('keyup',randomFunction);
     grabValue2.addEventListener('keyup',randomFunction);
